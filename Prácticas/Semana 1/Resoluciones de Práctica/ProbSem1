@@ -1,0 +1,102 @@
+#include <iostream>
+using namespace std;
+void ingresoA(int matriz[], int& n);
+void ingresoB(int matriz[], int &n);
+void impresion(int matriz[], int n);
+void llenadoVectorC(int matrizA[], int &indiceA, int matrizB[], int &indiceB, int matrizC[], int &indiceC);
+int menuOpciones();
+int main()
+{
+	int matrizA[10];
+	int matrizB[10];
+	int matrizC[10];
+	int indiceA = 0, op, indiceB = 0, indiceC = 0;
+	do{
+		system("cls");
+		op = menuOpciones();
+		switch(op){
+			case 1: cout<<"Ingreso en el vector A"<<endl;
+					ingresoA(matrizA, indiceA);
+					cout<<"Ingreso en el vector B"<<endl;
+					ingresoB(matrizB, indiceB);
+					cout<<"Matriz A:"<<endl;
+					impresion(matrizA, indiceA);
+					cout<<"Matriz B:"<<endl;
+					impresion(matrizB, indiceB);
+					break;
+			case 2: llenadoVectorC(matrizA, indiceA, matrizB, indiceB, matrizC, indiceC);
+					cout<<"Impresion C:"<<endl;
+					impresion(matrizC, indiceC);	
+					break;
+			case 3: cout<<"Impresion A"<<endl;
+					impresion(matrizA, indiceA);
+					cout<<"Impresion B"<<endl;
+					impresion(matrizB, indiceB);
+					cout<<"Impresion C"<<endl;
+					impresion(matrizC, indiceC);
+				 	break;
+		}
+		system("pause");
+	} while(op != 4);
+	
+	
+}
+void ingresoA(int matriz[], int& n){
+	if(n < 10){
+		for(int i = n; i > 0 ; i--)
+			matriz[i] = matriz[i-1];
+		do{
+			cin>>matriz[0];
+		} while(matriz[0] <= 0 || matriz[0] % 2 != 0);
+		
+		n++;
+	}
+	else
+		cout<<"Sobrepaso el espacio en vector A"<<endl;	
+}
+void ingresoB(int matriz[], int& n){
+	if(n < 10){
+		for(int i = n; i > 0 ; i--)
+			matriz[i] = matriz[i-1];
+		do{
+			cin>>matriz[0];
+		} while(matriz[0] >= 0 || matriz[0] % 2 == 0);
+		
+		n++;
+	}
+	else
+		cout<<"Sobrepaso el espacio en vector B"<<endl;	
+}
+void impresion(int matriz[], int n){
+	for(int i = 0; i <= n - 1; i++){
+		cout<<matriz[i]<<"\t";
+	}
+	cout<<endl;
+}
+
+int menuOpciones(){
+	cout<<"1. Ingreso de valores de A y B"<<endl;
+	cout<<"2. Llenado de vector C"<<endl;
+	cout<<"3. Mostrar todos los vectores"<<endl;
+	cout<<"4. Salir"<<endl;
+	int op;
+	cin>>op;
+	return op;
+}
+void llenadoVectorC(int matrizA[], int &indiceA, int matrizB[], int &indiceB, int matrizC[], int &indiceC){
+	if(indiceA > 0 && indiceB > 0){
+	
+		matrizC[indiceC] = matrizA[0] + matrizB[0];
+		indiceC++;
+		for(int i = 0; i < indiceA-1; i++){
+			matrizA[i] = matrizA[i+1];
+		}
+		indiceA--;
+		for(int i = 0; i < indiceB-1; i++){
+			matrizB[i] = matrizB[i+1];
+		}
+		indiceB--;
+	}
+	else cout<<"No se puede realizar, vectores vacios"<<endl;
+}
+
