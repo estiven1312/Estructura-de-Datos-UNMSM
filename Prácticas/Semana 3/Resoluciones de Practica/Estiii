@@ -1,0 +1,156 @@
+#include<iostream>
+using namespace std;
+struct nodo{
+	int nro;
+	struct nodo *sgte;
+	};
+	
+typedef struct nodo *PtrNodo;
+PtrNodo crearNodo(int numElements, int &lastElement){
+	PtrNodo nuevo=NULL;
+	nuevo = new(struct nodo);
+    if(numElements == 0)
+    {
+        do
+        {
+            cout<<"Ingresar dato par --> "; cin>>nuevo->nro;
+	        cout<<endl;
+            if(nuevo->nro % 2 != 0)
+                cout<<"Error, ingrese dato par"<<endl;
+        } while (nuevo->nro % 2 != 0);
+    }
+    else{
+        do
+        {
+            cout<<"Ingresar dato par menor que "<<lastElement<<" --> "; cin>>nuevo->nro;
+	        cout<<endl;
+            if(nuevo->nro % 2 != 0 || nuevo -> nro >= lastElement)
+                cout<<"Error, ingrese dato par y menor que el ultimo"<<endl;
+        } while (nuevo->nro % 2 != 0 || nuevo -> nro >= lastElement);
+    }
+    lastElement = nuevo -> nro; 
+	nuevo->sgte=NULL;
+	return nuevo;
+}
+
+void insertar(PtrNodo &inicioLista, int &numElements, int &lastElement){
+	PtrNodo p = inicioLista;
+	PtrNodo q = crearNodo(numElements, lastElement);
+	numElements = numElements + 1;
+	if(inicioLista==NULL){
+		inicioLista=q;
+		return;
+	}
+	
+	while(p->sgte != NULL){
+			p=p->sgte;
+	}
+	
+	p->sgte=q;
+    	
+}
+
+void eliminacionElementoMedio(PtrNodo &inicioLista, int &numElementos, int &ultimoElemento){
+    PtrNodo nodo1 = inicioLista;
+    PtrNodo nodoaux = NULL;
+    int valorEliminado;
+    int x = 1;
+    int posicion;
+    if(numElementos == 0){
+    	cout<<"No se puede no hay numeros"<<endl;
+    	return;
+	}
+    if(numElementos == 1){
+    	valorEliminado = inicioLista -> nro;
+    	posicion = 1;
+        inicioLista = NULL;
+        delete(nodo1);
+    }
+    else if(numElementos == 2){
+        valorEliminado = inicioLista->nro;
+        inicioLista = inicioLista ->sgte;
+        posicion = 1;
+        delete(nodo1);
+    }
+    
+    else{
+        if(numElementos % 2 == 0)   
+            posicion = numElementos / 2;
+        else    
+            posicion = numElementos / 2 + 1;
+        while(x != posicion){
+            nodoaux = nodo1;
+            nodo1 = nodo1->sgte;
+            x++;
+        }
+        valorEliminado = nodo1->nro;
+        nodoaux->sgte = nodo1->sgte; 
+        delete(nodo1);
+    }
+    cout<<"Valor eliminado: "<<valorEliminado<<" posicion: "<<posicion<<endl;
+    numElementos--;
+}
+int menu(){
+	
+	system("CLS");
+	cout<<"\n\t ******LISTA ENLAZADA SIMPLE******\n\n";
+	cout<<"\t1.- Insertar elemento"<<endl;
+	cout<<"\t2.- Suma de nodos y numero de nodos"<<endl;
+	cout<<"\t3.- Ubicacion y eliminacion del elemento medio"<<endl;	
+	cout<<"\t4.- Ver Lista"<<endl;	
+    cout<<"\t0.- SALIR"<<endl;	
+	cout<<"Ingresar Opcion---> "<<endl;
+	int op;
+	cin>>op;
+	return op;
+}
+int sumar(PtrNodo lista){
+	int acumulador = 0;
+	while(lista != NULL){
+		acumulador += lista->nro;
+		lista = lista->sgte;
+		
+	}
+	return acumulador;
+}
+void verLista(PtrNodo inicioLista){
+    cout<<"LISTA"<<endl;
+	while(inicioLista != NULL){
+        cout<<inicioLista->nro;
+        if(inicioLista->sgte != NULL)
+            cout<<" -> ";
+		inicioLista = inicioLista->sgte;
+		
+	}
+	cout<<endl;
+}
+int main(){
+    PtrNodo lista=NULL;
+	int opc, numeroElementos = 0, lastElement, suma;
+	do{
+		opc = menu();
+		
+		
+		switch(opc){
+
+			case 1: 
+                    insertar(lista, numeroElementos, lastElement);
+			
+			break;
+			case 2:suma = sumar(lista);
+            cout<<"La suma de elementos es: "<<suma<<" y el numero de elementos es: "<<numeroElementos<<endl;
+			break;
+
+            case 3: eliminacionElementoMedio(lista, numeroElementos, lastElement);
+            break;
+
+            case 4: verLista(lista);
+            break;
+		
+        }system("pause");
+        system("cls");
+	}while(opc !=0);
+
+	
+	return 0;
+}
